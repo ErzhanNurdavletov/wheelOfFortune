@@ -11,6 +11,14 @@ public class Main {
     static ArrayList<String> players = new ArrayList<>();
     static ArrayList<Integer> scores = new ArrayList<>();
 
+    static String red = "\u001B[31m";
+    static String green = "\u001B[32m";
+    static String yellow =  "\u001B[33m";
+    static String blue =  "\u001B[34m";
+    static String purple = "\u001B[35m";
+    static String colorStop = "\u001B[0m";
+    static String cyan = "\u001B[36m";
+
     public static void main(String[] args) {
 
         String[] words = {"apple", "car", "house", "book", "ball", "sun", "tree", "school", "shop", "phone"};
@@ -28,30 +36,30 @@ public class Main {
         showSequence();
         checkUsersAnswer(wordArray, outputArray, randomIndex, words, questions);
     }
-
     static void checkUsersAnswer(char[] wordArray, char[] outputArray, int randomIndex, String[] words, String[] questions) {
 
         int i = 0;
 
         while(!checkScoreWin(wordArray.length) && !checkGameFinished(wordArray, outputArray)) {
 
-            System.out.println(players.get(i) + " is answering now");
             System.out.println(" ----------------------------------");
-            System.out.println("Question: " + questions[randomIndex] + "?");
-            System.out.println("Already found letters in the word: ");
+            System.out.println(blue + players.get(i) + yellow + " is answering now" + colorStop);
+            System.out.println(green + "Question: " + blue + questions[randomIndex] + "?" + colorStop);
+            System.out.println(cyan + "Already found letters in the word: ");
             for (char letter : outputArray) {
                 System.out.print(letter + " ");
             }
+            System.out.print(colorStop);
             System.out.println();
-            System.out.print("Enter letter or word: ");
+            System.out.print(yellow + "Enter letter or word: " + colorStop);
             String userAnswer = sc.nextLine();
 
             if (userAnswer.length() > 1 && userAnswer.equals(words[randomIndex])) {
-                System.out.println("Game finished! " + players.get(i) + " has won.");
+                System.out.println(purple + "Game finished! " + players.get(i) + " has won by entering full word !!!" + colorStop);
                 break;
             }
             else if (userAnswer.length() > 1 && !userAnswer.equals(words[randomIndex])) {
-                System.out.println("Wrong answer, " + players.get(i) + " leaves the game");
+                System.out.println(red + "Wrong answer, " + blue + players.get(i) + red + " leaves the game" + colorStop);
                 players.remove(i);
                 scores.remove(i);
             }
@@ -63,7 +71,7 @@ public class Main {
                 for (int j = 0; j < wordArray.length; j++) {
                     flag = false;
                     if (userAnswerLetter == outputArray[j]) {
-                        System.out.println("This letter was already entered");
+                        System.out.println(red + "This letter was already entered" + colorStop);
                         i++;
                         break;
                     }
@@ -79,7 +87,7 @@ public class Main {
                 }
 
                 if (flag) {
-                    System.out.println("There is no  " + userAnswerLetter + "  letter");
+                    System.out.println(red + "There is no  " + blue + userAnswerLetter + red + "  letter" + colorStop);
                     i++;
                 }
 
@@ -87,18 +95,28 @@ public class Main {
             }
         }
         if (checkScoreWin(wordArray.length)) {
-            System.out.println(players.get(i) + " won, because of getting possible max points -> " + scores.get(i) + " out of " + wordArray.length * 100 + " !!!");
+            System.out.println(purple + players.get(i) + " won, because of getting possible max points -> "
+                    + red + scores.get(i) + " out of " + wordArray.length * 100 + purple + " !!!" + colorStop);
         }
     }
     static void saveUserNames() {
+        int minTwoPlayersCount = 0;
         while(true) {
-            System.out.print("Enter your name(when finish, enter f): ");
+            System.out.print(cyan + "Enter your name(when finish, enter f): " + colorStop);
             String name = sc.nextLine();
             if (name.equals("f")) {
-                break;
+                if (minTwoPlayersCount < 2) {
+                    System.out.println(red + "At least 2 players must join, add another players" + colorStop);
+                }
+                else {
+                    break;
+                }
             }
-            players.add(name);
-            scores.add(0);
+            else {
+                players.add(name);
+                scores.add(0);
+                minTwoPlayersCount++;
+            }
         }
     }
     static void showSequence() {
