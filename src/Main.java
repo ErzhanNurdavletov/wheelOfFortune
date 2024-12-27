@@ -21,7 +21,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String[] words = {"bread", "car", "house", "heart", "chair", "sun", "oxygen", "night", "shop", "phone"};
+        String[] words = {"BREAD", "CAR", "HOUSE", "HEART", "CHAIR", "SUN", "OXYGEN", "NIGHT", "SHOP", "PHONE"};
         String[] questions = {"A basic food made of flour, water and sold",
                 "People drive this", "People live in this place", "The organ in the body that pumps blood",
                 "A piece of furniture designed for sitting",
@@ -46,20 +46,24 @@ public class Main {
         while(!checkScoreWin(wordArray.length) && !checkGameFinished(wordArray, outputArray)) {
 
             System.out.println(colorStop + "               ═════════════════════════════════════════");
-            System.out.println("               " + blue + players.get(i) + yellow + " is answering now");
+            System.out.println();
             System.out.println(green + "               Question: " + blue + questions[randomIndex] + "?");
+
             System.out.println(cyan + "               Already found letters in the word: ");
+            System.out.println(colorStop + "               ********************************" + cyan);
             System.out.print("               ");
             for (char letter : outputArray) {
                 System.out.print(letter + "        ");
             }
-            System.out.print(colorStop);
             System.out.println();
+            System.out.println(colorStop + "               ********************************");
+            System.out.println();
+            System.out.println("               " + blue + players.get(i) + yellow + " is answering now");
             System.out.print(yellow + "               Enter letter or word: ");
-            String userAnswer = sc.nextLine().toLowerCase().trim();
+            String userAnswer = sc.nextLine().toUpperCase().trim();
 
             if (userAnswer.length() > 1 && userAnswer.equals(words[randomIndex])) {
-                System.out.println("               Answer: " + words[randomIndex].toUpperCase());
+                System.out.println(cyan + "               Answer: " + red + words[randomIndex]);
                 System.out.println(purple + "               Game finished! " + red + players.get(i) +
                         purple + " has won by entering full word !!!");
                 break;
@@ -67,6 +71,7 @@ public class Main {
             else if (userAnswer.length() > 1 && !userAnswer.equals(words[randomIndex])) {
                 System.out.println(red + "               Wrong answer, " + blue + players.get(i) +
                         red + " leaves the game");
+                System.out.println();
                 players.remove(i);
                 scores.remove(i);
             }
@@ -80,6 +85,7 @@ public class Main {
                     if (userAnswerLetter == outputArray[j]) {
                         System.out.println(red + "               This letter was already entered");
                         i++;
+                        System.out.println();
                         break;
                     }
                     else if (userAnswerLetter == wordArray[j]) {
@@ -88,6 +94,7 @@ public class Main {
                         scores.set(i, score);
                         System.out.println(yellow + "               Right letter, " + blue + players.get(i) +
                                 yellow + " answers again");
+                        System.out.println();
                         break;
                     }
                     else if(userAnswerLetter != wordArray[j]) {
@@ -98,37 +105,41 @@ public class Main {
                 if (flag) {
                     System.out.println(red + "               There is no  " + blue + userAnswerLetter +
                             red + "  letter");
+                    System.out.println();
                     i++;
                 }
 
                 i = startSequence(i);
             }
             if (players.size() < 2) {
-                System.out.println("               Answer: " + words[randomIndex].toUpperCase());
+                System.out.println(cyan + "               Answer: " + red + words[randomIndex]);
                 System.out.println(yellow + "               Only one player left, so " + blue +
                         players.getFirst() + yellow + " won !!!");
                 break;
             }
         }
         if (checkScoreWin(wordArray.length) && checkLettersFound(outputArray)) {
-            System.out.println("               " + purple + players.get(i) + " GOT possible max points -> "
+            System.out.println("               " + red + players.get(i) + purple + " GOT possible max points -> "
                     + red + scores.get(i) + " out of " + wordArray.length * 100 + purple +
                     " !!!" + colorStop);
             System.out.println(cyan + "               BUT" + red + " other" + cyan + " players have chance ↓");
+            System.out.println();
 
             boolean flag = true;
             for (int j = 0; j < players.size(); j++) {
                 if (j == i) continue;
                 else {
                     System.out.print("               " + blue + players.get(j) + yellow + " has LAST opportunity to win by entering full word: ");
-                    String lastAnswer = sc.nextLine().toLowerCase().trim();
+                    String lastAnswer = sc.nextLine().toUpperCase().trim();
                     if (lastAnswer.equals(words[randomIndex])) {
-                        System.out.println("               " + red + players.get(j) + green + " used own last chance and WON !!!");
+                        System.out.println(cyan + "               Answer: " + red + words[randomIndex]);
+                        System.out.println("               " + players.get(j) + green + " used own last chance and WON !!!");
                         flag = false;
                         break;
                     }
                     else {
                         System.out.println("               " + red + players.get(j) + green + " answered wrong and left the game");
+                        System.out.println();
                         players.remove(j);
                         scores.remove(j);
                         j--;
@@ -136,14 +147,14 @@ public class Main {
                 }
             }
             if (flag) {
-                System.out.println(red + "               Nobody used own chance to win, so");
-                System.out.println("               " + purple + players.get(i) + " won, because of getting possible max points -> "
+                System.out.println(cyan + "               Nobody used own chance to win, so");
+                System.out.println("               " + red + players.get(i) + purple + " won, because of getting possible max points -> "
                         + red + scores.get(i) + " out of " + wordArray.length * 100 + purple + " !!!");
-                System.out.println("               Answer: " + words[randomIndex].toUpperCase());
+                System.out.println(cyan + "               Answer: " + red + words[randomIndex]);
             }
         }
         else if (checkScoreWin(wordArray.length)) {
-            System.out.println("               Answer: " + words[randomIndex].toUpperCase());
+            System.out.println(cyan + "               Answer: " + red + words[randomIndex]);
             System.out.println("               " + purple + players.get(i) + " win because FIND word and GOT possible max points -> "
                     + red + scores.get(i) + " out of " + wordArray.length * 100 + purple +
                     " !!!" + colorStop);
